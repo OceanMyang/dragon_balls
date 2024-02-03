@@ -1,0 +1,60 @@
+/* .goboard {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1px;
+    background-color: #964B00;
+} */
+/* 
+div {
+
+    width: 10px;
+    height: 10px;
+    margin: 0;
+}
+
+.p1 {
+    background-color: black;
+}
+
+.p2 {
+    background-color: white;
+}
+
+.empty {
+    background-color: gainsboro;
+} */
+
+.row-container {
+  display: flex;
+}
+
+.board {
+    width: 400px;
+    height: 400px;
+    background-color: #964B00; /* border color */
+  }
+  
+.cell {
+  width: 100%;
+  border: 1px solid black;
+  background-color: #f5deb3; /* cell color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
+}
+  
+.stone {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+}
+
+.black {
+  background-color: black;
+}
+
+.white {
+  background-color: white;
+}
+  

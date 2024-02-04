@@ -14,15 +14,6 @@ function inRange(num, min, max){
   return num >= min && num <= max;
 }
 
-// list = [1, 2, 3, 4, 5];
-// function accruement(i, list) {
-//   if (inRange(i, 0, list.length - 1)) {
-//     return list[i] + accruement(i + 1, list);
-//   } else {
-//     return 0;
-//   }
-// }
-
 function visitDirection(board, stone, x, y, dx, dy){
   if (inRange(x, 0, board.length - 1) && inRange(y, 0, board[0].length - 1)) {
     if (board[x][y] == stone){
@@ -68,7 +59,6 @@ function isEnd(board, x, y, numWin){
 
 function renderStatus(state, condition) {
   const statusElement = document.getElementById('status');
-  console.log(condition)
   switch(condition){
     case End.P1:
       statusElement.innerHTML = `Player ${state} wins!`;
@@ -78,6 +68,9 @@ function renderStatus(state, condition) {
       break;
     case End.Tie:
       statusElement.innerHTML = `Tie!`;
+      break;
+    case -1:
+      statusElement.innerHTML = `Space Occupied`;
       break;
     default:
       statusElement.innerHTML = `Player ${state} is playing...`;
@@ -115,54 +108,59 @@ function renderGoBoard(board) {
   }
 }
 
-//main
-const boardSize = 10;
-const goBoard = new Array(boardSize).fill(null).map(() => new Array(boardSize).fill(null));
-state = State.P1;
-const endGame = new Event("End of the game");
-
-// Initial render
-renderStatus(state, 0);
-renderGoBoard(goBoard);
-
 function cellEventListener(event){
-  if (event.target.className == 'cell') {
-    // Your code here
-    console.clear();
+  if (event.target.className == "cell") {
     input = event.target.id.split(" ");
-    nextState(input);
+  } else if (event.target.parentElement.className == "cell") {
+    input = event.target.parentElement.id.split(" ");
   }
+  row = parseInt(input[0]);
+  col = parseInt(input[1]);
+  nextState(row, col);
 }
 
 function removeCellEventListener(){
-  document.removeEventListener('click', cellEventListener);
+  document.removeEventListener("click", cellEventListener);
 }
 
-function nextState(input) {
-  row = parseInt(input[0]);
-  col = parseInt(input[1]);
-  goBoard[row][col] = state;
-
-  // Testing
-  // console.log(maxSumDirections(goBoard, state, row, col, 1, 1));
-  
-  end = isEnd(goBoard, row, col, 5);
-  if (end != 0) {
-    renderStatus(state, isEnd(goBoard, row, col, 5));
-    renderGoBoard(goBoard);
-    removeCellEventListener();
+function nextState(row, col) {
+  // only allow to set stone in empty cells
+  // else show status "space occupied"
+  if (goBoard[row][col] == null) {
+    goBoard[row][col] = state;
+  } else {
+    renderStatus(state, -1);
+    setTimeout(()=>{renderStatus(state, 0)}, 1000)
+    return;
   }
 
+  // Check if this move ends the game
+  end = isEnd(goBoard, row, col, 5);
+  if (end != 0) {
+    renderStatus(state, end);
+    renderGoBoard(goBoard);
+    removeCellEventListener();
+    return;
+  }
+
+  // If game continues, switch the player
   if (state == State.P1) {
     state = State.P2;
   } else {
     state = State.P1;
   }
+  renderStatus(state, 0);
   renderGoBoard(goBoard);
-  // Testing
-  // for (i of goBoard) {
-  //   console.log(i);
-  // }
+  return;
 }
 
+
+//main
+const boardSize = 10;
+const goBoard = new Array(boardSize).fill(null).map(() => new Array(boardSize).fill(null));
+state = State.P1;
+
+// Initial render
+renderStatus(state, 0);
+renderGoBoard(goBoard);
 document.addEventListener('click', cellEventListener);

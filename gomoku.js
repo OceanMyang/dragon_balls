@@ -1,3 +1,18 @@
+//main
+function main(size, win){
+  const boardSize = size;
+  const numWin = win;
+  const goBoard = new Array(boardSize).fill(null).map(() => new Array(boardSize).fill(null));
+  state = State.P1;
+  cellEventListenerWrapper = (event) => cellEventListener(event, goBoard, numWin);
+  removeCellEventListener = () => {document.removeEventListener("click", cellEventListenerWrapper)};
+
+  // Initial render
+  renderStatus(state, 0);
+  renderGoBoard(goBoard);
+  document.addEventListener('click', cellEventListenerWrapper);
+}
+
 State = {
   P1: 1,
   P2: 2,
@@ -36,7 +51,7 @@ function maxSumDirections(board, stone, x, y){
   return max;
 }
 
-function isEnd(board, x, y, numWin){
+function finalState(board, x, y, numWin){
   if (maxSumDirections(board, State.P1, x, y) >= numWin) {
     // Player 1 wins
     return End.P1
@@ -108,26 +123,23 @@ function renderGoBoard(board) {
   }
 }
 
-function cellEventListener(event){
-  if (event.target.className == "cell") {
+function cellEventListener(event, board, numWin){
+  if (event.target.className != "cell") {
+    if (event.target.parentElement.className != "cell") {
+      return;
+    } else {
+      input = event.target.parentElement.id.split(" ");
+    }
+  } else {
     input = event.target.id.split(" ");
-  } else if (event.target.parentElement.className == "cell") {
-    input = event.target.parentElement.id.split(" ");
   }
   row = parseInt(input[0]);
   col = parseInt(input[1]);
-  nextState(row, col);
-}
 
-function removeCellEventListener(){
-  document.removeEventListener("click", cellEventListener);
-}
-
-function nextState(row, col) {
   // only allow to set stone in empty cells
   // else show status "space occupied"
-  if (goBoard[row][col] == null) {
-    goBoard[row][col] = state;
+  if (board[row][col] == null) {
+    board[row][col] = state;
   } else {
     renderStatus(state, -1);
     setTimeout(()=>{renderStatus(state, 0)}, 1000)
@@ -135,10 +147,10 @@ function nextState(row, col) {
   }
 
   // Check if this move ends the game
-  end = isEnd(goBoard, row, col, 5);
-  if (end != 0) {
+  end = finalState(board, row, col, numWin);
+  if (end != End.Not) {
     renderStatus(state, end);
-    renderGoBoard(goBoard);
+    renderGoBoard(board);
     removeCellEventListener();
     return;
   }
@@ -150,17 +162,8 @@ function nextState(row, col) {
     state = State.P1;
   }
   renderStatus(state, 0);
-  renderGoBoard(goBoard);
+  renderGoBoard(board);
   return;
 }
-
-
-//main
-const boardSize = 10;
-const goBoard = new Array(boardSize).fill(null).map(() => new Array(boardSize).fill(null));
-state = State.P1;
-
-// Initial render
-renderStatus(state, 0);
-renderGoBoard(goBoard);
-document.addEventListener('click', cellEventListener);
+let cellEventListenerWrapper;
+let removeCellEventListener;

@@ -1,6 +1,6 @@
 let State = {
-  P1: 1,
-  P2: 2,
+  P1: "Player 1",
+  P2: "Player 2",
 }
 
 const End = {
@@ -56,13 +56,13 @@ function startGame(){
   p1 = document.getElementById("p1-id").value;
   if (p1 != "") {
     State.P1 = p1;
-    document.getElementById("getP1ID").innerText = `Enter Player 1's Name. Now "${State.P1}"!`;
+    document.getElementById("getP1ID").innerText = `Player 1's Name? Now "${State.P1}"!`;
   }
 
   p2 = document.getElementById("p2-id").value;
   if (p2 != "") {
     State.P2 = p2;
-    document.getElementById("getP2ID").innerText = `Enter Player 2's Name. Now "${State.P2}"!`;
+    document.getElementById("getP2ID").innerText = `Player 2's Name? Now "${State.P2}"!`;
   }
 
   toggleScreen("start-screen", false);
@@ -137,10 +137,10 @@ function renderStatus(state, condition) {
   const statusElement = document.getElementById('status');
   switch(condition){
     case End.P1:
-      statusElement.innerHTML = `Player ${state} wins!`;
+      statusElement.innerHTML = `${state} wins!`;
       break;
     case End.P2:
-      statusElement.innerHTML = `Player ${state} wins!`;
+      statusElement.innerHTML = `${state} wins!`;
       break;
     case End.Tie:
       statusElement.innerHTML = `Tie!`;
@@ -155,7 +155,7 @@ function renderStatus(state, condition) {
       statusElement.innerHTML = `Can not Regret`;
       break;
     default:
-      statusElement.innerHTML = `Player ${state} is playing...`;
+      statusElement.innerHTML = `${state} is playing...`;
       break;
   }
 }

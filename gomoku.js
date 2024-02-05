@@ -1,28 +1,35 @@
+let boardSize = 0;
+let numWin = 0;
+
+const State = {
+  P1: 1,
+  P2: 2,
+}
+
+const End = {
+  Not: 0,
+  P1: 1,
+  P2: 2,
+  Tie: 3,
+}
+
 //main
-function main(size, win){
-  const boardSize = size;
-  const numWin = win;
-  const goBoard = new Array(boardSize).fill(null).map(() => new Array(boardSize).fill(null));
-  state = State.P1;
-  cellEventListenerWrapper = (event) => cellEventListener(event, goBoard, numWin);
+function startGame(){
+  toggleScreen("#start-screen", false);
+  toggleScreen("#game-interface", true);
+  buildGame(boardSize, numWin);
+}
+
+function buildGame(size, win){
+  const goBoard = new Array(size).fill(null).map(() => new Array(size).fill(null));
+  let state = State.P1;
+  cellEventListenerWrapper = (event) => cellEventListener(event, goBoard, win);
   removeCellEventListener = () => {document.removeEventListener("click", cellEventListenerWrapper)};
 
   // Initial render
   renderStatus(state, 0);
   renderGoBoard(goBoard);
   document.addEventListener('click', cellEventListenerWrapper);
-}
-
-State = {
-  P1: 1,
-  P2: 2,
-}
-
-End = {
-  Not: 0,
-  P1: 1,
-  P2: 2,
-  Tie: 3,
 }
 
 function inRange(num, min, max){
@@ -142,7 +149,7 @@ function cellEventListener(event, board, numWin){
     board[row][col] = state;
   } else {
     renderStatus(state, -1);
-    setTimeout(()=>{renderStatus(state, 0)}, 1000)
+    setTimeout(()=>{renderStatus(state, End.Not)}, 1000)
     return;
   }
 
@@ -167,3 +174,17 @@ function cellEventListener(event, board, numWin){
 }
 let cellEventListenerWrapper;
 let removeCellEventListener;
+
+function setSize(size){
+  boardSize = size;
+}
+
+function setNumWin(size){
+  boardSize = size;
+}
+
+function toggleScreen(id, toggle) {
+  let element = document.getElementById(id);
+  let display = ( toggle ) ? "block" : "none";
+  element.style.display = toggle;
+}

@@ -2,18 +2,33 @@
 
 <html>
     <link rel="stylesheet" href="gostyle.css">
+    <head>
+        <title>Gomoku</title>
+    </head>
     <body>
         <div id="start-screen">
-            <form action="">
-                <input type="number">
-            </form>
-            <form onsubmit="">
-                <input type="number">
-                <input type="submit">
+            <h1 id="main-title">Gomoku</h1>
+            <form onsubmit="startGame(); return false;">
+                <div id="getSize" >The size of your board?</div>
+                <input autofocus id="size" placeholder="5 - 20" type="number">
+                <div id="getNumWin" >A magic number?</div>
+                <input autofocus id="win" placeholder="5 - 7" type="number">
+                <div id="getP1ID" >Enter Player 1's name</div>
+                <input autofocus id="p1-id" placeholder="Optional" type="text">
+                <div id="getP2ID" >Enter Player 2's name</div>
+                <input autofocus id="p2-id" placeholder="Optional" type="text">
+                <div></div>
+                <button id="play-button" onclick="startGame(); return true;" disabled>
+                    Play
+                </button>
             </form>
         </div>
-        <div id='game-interface'>
-            <header id='tools'></header>
+        <div id='game-interface' style="display: none;">
+            <header id='tools'>
+                <button onclick="returnTitle();">return</button>
+                <button onclick="reset();">reset</button>
+                <button onclick="regret();">regret</button>
+            </header>
             <div id='status'></div>
             <div id='goBoard'></div>
         </div>

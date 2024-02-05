@@ -1,7 +1,4 @@
-let boardSize = 0;
-let numWin = 0;
-
-const State = {
+let State = {
   P1: 1,
   P2: 2,
 }
@@ -12,24 +9,81 @@ const End = {
   P2: 2,
   Tie: 3,
 }
+const maxSize = 20;
+const minSize = 5;
+const maxWin = 7;
+const minWin = 5;
 
-//main
+let boardSize = 0;
+let numWin = 0;
+let state = State.P1;
+let goBoard = null;
+let row = null;
+let col = null;
+
+document.addEventListener("input", ()=>{
+  win = document.getElementById("win").value;
+  size = document.getElementById("size").value;
+  playButton = document.getElementById("play-button")
+  if (inRange(size, minSize, maxSize) && inRange(win, minWin, maxWin)) {
+    playButton.disabled = false;
+  } else {
+    playButton.disabled = true;
+  }
+});
+
 function startGame(){
-  toggleScreen("#start-screen", false);
-  toggleScreen("#game-interface", true);
-  buildGame(boardSize, numWin);
+  size = document.getElementById("size").value;
+  if (inRange(size, minSize, maxSize)) {
+    boardSize = parseInt(size);
+    document.getElementById("getSize").innerText = `Another size of your board? Now ${boardSize}!`;
+  } else {
+    alert("Oops! Seems your size is not in range.");
+    size = "";
+    return;
+  }
+
+  win = document.getElementById("win").value;
+  if (inRange(win, minWin, maxWin)) {
+    numWin = parseInt(win);
+    document.getElementById("getNumWin").innerText = `Another magic number? Now ${numWin}!`;
+  } else {
+    alert("Oops! Seems your magic number is not in range.");
+    win = "";
+    return
+  }
+  
+  p1 = document.getElementById("p1-id").value;
+  if (p1 != "") {
+    State.P1 = p1;
+    document.getElementById("getP1ID").innerText = `Enter Player 1's Name. Now "${State.P1}"!`;
+  }
+
+  p2 = document.getElementById("p2-id").value;
+  if (p2 != "") {
+    State.P2 = p2;
+    document.getElementById("getP2ID").innerText = `Enter Player 2's Name. Now "${State.P2}"!`;
+  }
+
+  toggleScreen("start-screen", false);
+  toggleScreen("game-interface", true);
+  buildGame();
 }
 
-function buildGame(size, win){
-  const goBoard = new Array(size).fill(null).map(() => new Array(size).fill(null));
-  let state = State.P1;
-  cellEventListenerWrapper = (event) => cellEventListener(event, goBoard, win);
-  removeCellEventListener = () => {document.removeEventListener("click", cellEventListenerWrapper)};
+function buildGame(){
+  state = State.P1;
+  goBoard = new Array(boardSize).fill(null).map(() => new Array(boardSize).fill(null));
 
   // Initial render
   renderStatus(state, 0);
   renderGoBoard(goBoard);
-  document.addEventListener('click', cellEventListenerWrapper);
+  document.addEventListener('click', cellEventListener);
+}
+
+function toggleScreen(id, toggle) {
+  let element = document.getElementById(id);
+  let display = ( toggle ) ? "block" : "none";
+  element.style.display = display;
 }
 
 function inRange(num, min, max){
@@ -94,6 +148,12 @@ function renderStatus(state, condition) {
     case -1:
       statusElement.innerHTML = `Space Occupied`;
       break;
+    case -2:
+      statusElement.innerHTML = `Can not Reset`;
+      break;
+    case -3:
+      statusElement.innerHTML = `Can not Regret`;
+      break;
     default:
       statusElement.innerHTML = `Player ${state} is playing...`;
       break;
@@ -130,7 +190,15 @@ function renderGoBoard(board) {
   }
 }
 
-function cellEventListener(event, board, numWin){
+function switchPlayer() {
+  if (state == State.P1) {
+    state = State.P2;
+  } else {
+    state = State.P1;
+  }
+}
+
+function cellEventListener(event){
   if (event.target.className != "cell") {
     if (event.target.parentElement.className != "cell") {
       return;
@@ -145,8 +213,8 @@ function cellEventListener(event, board, numWin){
 
   // only allow to set stone in empty cells
   // else show status "space occupied"
-  if (board[row][col] == null) {
-    board[row][col] = state;
+  if (goBoard[row][col] == null) {
+    goBoard[row][col] = state;
   } else {
     renderStatus(state, -1);
     setTimeout(()=>{renderStatus(state, End.Not)}, 1000)
@@ -154,37 +222,49 @@ function cellEventListener(event, board, numWin){
   }
 
   // Check if this move ends the game
-  end = finalState(board, row, col, numWin);
+  let end = finalState(goBoard, row, col, numWin);
   if (end != End.Not) {
     renderStatus(state, end);
-    renderGoBoard(board);
+    renderGoBoard(goBoard);
     removeCellEventListener();
     return;
   }
 
   // If game continues, switch the player
-  if (state == State.P1) {
-    state = State.P2;
-  } else {
-    state = State.P1;
-  }
+  switchPlayer();
   renderStatus(state, 0);
-  renderGoBoard(board);
+  renderGoBoard(goBoard);
   return;
 }
-let cellEventListenerWrapper;
-let removeCellEventListener;
 
-function setSize(size){
-  boardSize = size;
+function removeCellEventListener() {
+  document.removeEventListener("click", cellEventListener);
 }
 
-function setNumWin(size){
-  boardSize = size;
+function returnTitle(){
+  toggleScreen("start-screen", true);
+  toggleScreen("game-interface", false);
 }
 
-function toggleScreen(id, toggle) {
-  let element = document.getElementById(id);
-  let display = ( toggle ) ? "block" : "none";
-  element.style.display = toggle;
+function reset(){
+  if (goBoard != null) {
+    buildGame();
+  } else {
+    renderStatus(state, -2);
+    setTimeout(()=>{renderStatus(state, End.Not)}, 1000);
+    console.error("reset failed: goBoard uninitialized.");
+  }
+}
+
+function regret(){
+  if (goBoard != null && row != null && col != null) {
+    goBoard[row][col] = null;
+    renderGoBoard(goBoard);
+    switchPlayer();
+    row = null;
+    col = null;
+  } else {
+    renderStatus(state, -3);
+    setTimeout(()=>{renderStatus(state, End.Not)}, 1000);
+  }
 }

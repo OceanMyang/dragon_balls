@@ -20,6 +20,7 @@ let state = State.P1;
 let goBoard = null;
 let row = null;
 let col = null;
+let end = End.Not;
 
 document.addEventListener("input", ()=>{
   win = document.getElementById("win").value;
@@ -218,11 +219,13 @@ function cellEventListener(event){
   } else {
     renderStatus(state, -1);
     setTimeout(()=>{renderStatus(state, End.Not)}, 1000)
+    row = null;
+    col = null;
     return;
   }
 
   // Check if this move ends the game
-  let end = finalState(goBoard, row, col, numWin);
+  end = finalState(goBoard, row, col, numWin);
   if (end != End.Not) {
     renderStatus(state, end);
     renderGoBoard(goBoard);

@@ -13,14 +13,23 @@ const maxSize = 20;
 const minSize = 5;
 const maxWin = 7;
 const minWin = 5;
+const sizePrompt = "A size?";
+const winPrompt = "A magic number?";
+const p1Prompt = "Player 1's name?";
+const p2Prompt = "Player 2's name?";
 
 let boardSize = 0;
 let numWin = 0;
-let state = State.P1;
+let state = null;
 let goBoard = null;
 let row = null;
 let col = null;
-let end = End.Not;
+let end = null;
+
+document.getElementById("getSize").innerText = sizePrompt;
+document.getElementById("getNumWin").innerText = winPrompt;
+document.getElementById("getP1ID").innerText = p1Prompt;
+document.getElementById("getP2ID").innerText = p2Prompt;
 
 document.addEventListener("input", ()=>{
   win = document.getElementById("win").value;
@@ -31,13 +40,25 @@ document.addEventListener("input", ()=>{
   } else {
     playButton.disabled = true;
   }
+  if (playButton.disabled) {
+    playButton.style.opacity = "50%"
+  } else {
+    playButton.style.opacity = "100%"
+  }
+});
+
+document.addEventListener("submit", ()=>{
+  if (numWin != 0) {
+    intro = document.getElementById("intro");
+    intro.innerHTML = `Collect ${numWin} Dragon Balls to Win!`;
+  }
 });
 
 function startGame(){
   size = document.getElementById("size").value;
   if (inRange(size, minSize, maxSize)) {
     boardSize = parseInt(size);
-    document.getElementById("getSize").innerText = `Another size of your board? Now ${boardSize}!`;
+    document.getElementById("getSize").innerText = sizePrompt + ` Now ${boardSize}!`;
   } else {
     alert("Oops! Seems your size is not in range.");
     size = "";
@@ -47,7 +68,7 @@ function startGame(){
   win = document.getElementById("win").value;
   if (inRange(win, minWin, maxWin)) {
     numWin = parseInt(win);
-    document.getElementById("getNumWin").innerText = `Another magic number? Now ${numWin}!`;
+    document.getElementById("getNumWin").innerText = winPrompt + ` Now ${numWin}!`;
   } else {
     alert("Oops! Seems your magic number is not in range.");
     win = "";
@@ -57,13 +78,13 @@ function startGame(){
   p1 = document.getElementById("p1-id").value;
   if (p1 != "") {
     State.P1 = p1;
-    document.getElementById("getP1ID").innerText = `Player 1's Name? Now "${State.P1}"!`;
+    document.getElementById("getP1ID").innerText = p1Prompt + ` Now "${State.P1}"!`;
   }
 
   p2 = document.getElementById("p2-id").value;
   if (p2 != "") {
     State.P2 = p2;
-    document.getElementById("getP2ID").innerText = `Player 2's Name? Now "${State.P2}"!`;
+    document.getElementById("getP2ID").innerText = p2Prompt + ` Now "${State.P2}"!`;
   }
 
   toggleScreen("start-screen", false);
@@ -72,13 +93,21 @@ function startGame(){
 }
 
 function buildGame(){
+  // Initialize Variables
   state = State.P1;
   goBoard = new Array(boardSize).fill(null).map(() => new Array(boardSize).fill(null));
+  row = null;
+  col = null;
+  end = End.Not;
 
   // Initial render
-  renderStatus(state, 0);
-  renderGoBoard(goBoard);
+  render(state, 0);
   document.addEventListener('click', cellEventListener);
+}
+
+function render(state, condition){
+  renderStatus(state, condition);
+  renderGoBoard(goBoard);
 }
 
 function toggleScreen(id, toggle) {
@@ -227,16 +256,14 @@ function cellEventListener(event){
   // Check if this move ends the game
   end = finalState(goBoard, row, col, numWin);
   if (end != End.Not) {
-    renderStatus(state, end);
-    renderGoBoard(goBoard);
+    render(state, end);
     removeCellEventListener();
     return;
   }
 
   // If game continues, switch the player
   switchPlayer();
-  renderStatus(state, 0);
-  renderGoBoard(goBoard);
+  render(state, 0);
   return;
 }
 
@@ -260,14 +287,21 @@ function reset(){
 }
 
 function regret(){
-  if (goBoard != null && row != null && col != null) {
+  if (goBoard != null && row != null && col != null && end == End.Not) {
     goBoard[row][col] = null;
-    renderGoBoard(goBoard);
-    switchPlayer();
     row = null;
     col = null;
+    render(state, end);
+    switchPlayer();
   } else {
     renderStatus(state, -3);
     setTimeout(()=>{renderStatus(state, End.Not)}, 1000);
   }
+}
+
+function toBlack(element){
+  element.className = element.className.replace("white-black", "black-white");
+}
+function toWhite(element){
+  element.className = element.className.replace("black-white", "white-black");
 }

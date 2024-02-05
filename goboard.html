@@ -4,33 +4,36 @@
     <link rel="stylesheet" href="gostyle.css">
     <head>
         <title>Gomoku</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <div id="start-screen">
-            <h1 id="main-title">Gomoku</h1>
+            <header></header>
+            <div id="main-title">Dragon Balls</div>
+            <div id="intro">Collect Dragon Balls to Win!</div>
             <form onsubmit="startGame(); return false;">
-                <div id="getSize" >The size of your board?</div>
+                <div id="getSize" class="prompt"></div>
                 <input autofocus id="size" placeholder="5 - 20" type="number">
-                <div id="getNumWin" >A magic number?</div>
+                <div id="getNumWin" class="prompt"></div>
                 <input autofocus id="win" placeholder="5 - 7" type="number">
-                <div id="getP1ID" >Player 1's name?</div>
+                <div id="getP1ID" class="prompt"></div>
                 <input autofocus id="p1-id" placeholder="Optional" type="text">
-                <div id="getP2ID" >Player 2's name?</div>
+                <div id="getP2ID" class="prompt"></div>
                 <input autofocus id="p2-id" placeholder="Optional" type="text">
                 <div></div>
-                <button id="play-button" onclick="startGame(); return true;" disabled>
+                <button id="play-button" class="white-black" style="opacity: 50%;" onclick="startGame(); return true;" onmouseover="toBlack(this);" onmouseout="toWhite(this);" disabled>
                     Play
                 </button>
             </form>
         </div>
         <div id='game-interface' style="display: none;">
-            <header id='tools'>
-                <button onclick="returnTitle();">return</button>
-                <button onclick="reset();">reset</button>
-                <button onclick="regret();">regret</button>
+            <header id='toolbar'>
+                <button class="tool white-black" onclick="returnTitle();" onmouseover="toBlack(this);" onmouseout="toWhite(this);">return</button>
+                <button class="tool white-black" onclick="reset();" onmouseover="toBlack(this);" onmouseout="toWhite(this);">reset</button>
+                <button class="tool white-black" onclick="regret();" onmouseover="toBlack(this);" onmouseout="toWhite(this);">regret</button>
             </header>
             <div id='status'></div>
-            <div id='goBoard'></div>
+            <div id='goBoard' class="board"></div>
         </div>
     </body>
     <script src='gomoku.js'></script>

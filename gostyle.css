@@ -1,12 +1,65 @@
+body {
+  text-align: center;
+  margin: 0px;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#main-title {
+  font-weight: bold;
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+
+#intro {
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.prompt {
+  margin-bottom: 10px;
+}
+
+input {
+  margin-bottom: 20px;
+}
+
+#play-button {
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+header {
+  height: 60px;
+  &#toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.tool {
+  width: 150px;
+  height: 30px;
+  margin: 0 10px;
+  border-radius: 10px;
+}
+
+#status {
+  height: 60px;
+  font-size: 40px;
+}
+
 .row-container {
   display: flex;
 }
 
 .board {
-    width: 500px;
-    height: 500px;
-    border: 1px solid black;
-    background-color: #964B00; /* border color */
+  margin-left: 30vw;
+  margin-right: 30vw;
+  border: 1px solid black;
+  background-color: #964B00; /* border color */
 }
   
 .cell {
@@ -32,4 +85,15 @@
 .white {
   background-color: white;
 }
-  
+
+.black-white {
+  color: white;
+  background-color: black;
+  border: none;
+}
+
+.white-black {
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+}

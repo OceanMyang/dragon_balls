@@ -164,13 +164,16 @@ function finalState(board, x, y, numWin){
 }
 
 function renderStatus(state, condition) {
+  const tools = document.getElementsByClassName("tool");
   const statusElement = document.getElementById('status');
   switch(condition){
     case End.P1:
       statusElement.innerHTML = `${state} wins!`;
+      toBlack(statusElement);
       break;
     case End.P2:
       statusElement.innerHTML = `${state} wins!`;
+      toWhite(statusElement);
       break;
     case End.Tie:
       statusElement.innerHTML = `Tie!`;
@@ -186,6 +189,11 @@ function renderStatus(state, condition) {
       break;
     default:
       statusElement.innerHTML = `${state} is playing...`;
+      if (state == State.P1) {
+        toBlack(statusElement);
+      } else {
+        toWhite(statusElement);
+      }
       break;
   }
 }
@@ -291,17 +299,26 @@ function regret(){
     goBoard[row][col] = null;
     row = null;
     col = null;
-    render(state, end);
     switchPlayer();
+    render(state, end);
   } else {
     renderStatus(state, -3);
-    setTimeout(()=>{renderStatus(state, End.Not)}, 1000);
+    setTimeout(()=>{renderStatus(state, end)}, 1000);
   }
 }
 
-function toBlack(element){
+function toBlack(element) {
   element.className = element.className.replace("white-black", "black-white");
 }
-function toWhite(element){
+
+function toWhite(element) {
   element.className = element.className.replace("black-white", "white-black");
+}
+
+function toggleColor(element){
+  if (element.className.includes("white-black")) {
+    toBlack(element);
+  } else if (element.className.includes("black-white")) {
+    toWhite(element);
+  }
 }

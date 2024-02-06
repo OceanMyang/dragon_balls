@@ -8,7 +8,7 @@
     </head>
     <body>
         <div id="start-screen">
-            <header></header>
+            <header id="empty"></header>
             <div id="main-title">Dragon Balls</div>
             <div id="intro">Collect Dragon Balls to Win!</div>
             <form onsubmit="startGame(); return false;">
@@ -21,18 +21,18 @@
                 <div id="getP2ID" class="prompt"></div>
                 <input autofocus id="p2-id" placeholder="Optional" type="text">
                 <div></div>
-                <button id="play-button" class="white-black" style="opacity: 50%;" onclick="startGame(); return true;" onmouseover="toBlack(this);" onmouseout="toWhite(this);" disabled>
+                <button id="play-button" class="white-black" style="opacity: 50%;" onclick="startGame(); return true;" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);" disabled>
                     Play
                 </button>
             </form>
         </div>
         <div id='game-interface' style="display: none;">
             <header id='toolbar'>
-                <button class="tool white-black" onclick="returnTitle();" onmouseover="toBlack(this);" onmouseout="toWhite(this);">return</button>
-                <button class="tool white-black" onclick="reset();" onmouseover="toBlack(this);" onmouseout="toWhite(this);">reset</button>
-                <button class="tool white-black" onclick="regret();" onmouseover="toBlack(this);" onmouseout="toWhite(this);">regret</button>
+                <button class="tool white-black" onclick="returnTitle();" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);">return</button>
+                <button class="tool white-black" onclick="reset();" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);">reset</button>
+                <button class="tool white-black" onclick="regret();" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);">regret</button>
             </header>
-            <div id='status'></div>
+            <div id='status' class="black-white"></div>
             <div id='goBoard' class="board"></div>
         </div>
     </body>

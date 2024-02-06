@@ -13,13 +13,13 @@
             <div id="intro">Collect Dragon Balls to Win!</div>
             <form onsubmit="startGame(); return false;">
                 <div id="getSize" class="prompt"></div>
-                <input autofocus id="size" placeholder="5 - 20" type="number">
-                <div id="getNumWin" class="prompt"></div>
-                <input autofocus id="win" placeholder="5 - 7" type="number">
+                <input autofocus id="size" class="white-black" placeholder="5 - 20" type="number" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);">
+                <div id="getNumWin" class="prompt"></div> 
+                <input autofocus id="win" class="white-black" placeholder="5 - 7" type="number" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);">
                 <div id="getP1ID" class="prompt"></div>
-                <input autofocus id="p1-id" placeholder="Optional" type="text">
+                <input autofocus id="p1-id" class="white-black" placeholder="Optional" type="text" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);">
                 <div id="getP2ID" class="prompt"></div>
-                <input autofocus id="p2-id" placeholder="Optional" type="text">
+                <input autofocus id="p2-id" class="white-black" placeholder="Optional" type="text" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);">
                 <div></div>
                 <button id="play-button" class="white-black" style="opacity: 50%;" onclick="startGame(); return true;" onmouseover="toggleColor(this);" onmouseout="toggleColor(this);" disabled>
                     Play

@@ -255,7 +255,7 @@ function cellEventListener(event){
     goBoard[row][col] = state;
   } else {
     renderStatus(state, -1);
-    setTimeout(()=>{renderStatus(state, End.Not)}, 1000)
+    setTimeout(()=>{renderStatus(state, end)}, 1000)
     row = null;
     col = null;
     return;

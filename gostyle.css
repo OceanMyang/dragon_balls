@@ -5,8 +5,9 @@ body {
 }
 
 #main-title {
+  font-family: fantasy;
   font-weight: bold;
-  font-size: 50px;
+  font-size: 100px;
   margin-bottom: 30px;
 }
 
@@ -21,10 +22,12 @@ body {
 }
 
 input {
+  border-radius: 5px;
   margin-bottom: 20px;
 }
 
 #play-button {
+  border-radius: 10px;
   font-family:'Courier New', Courier, monospace;
   font-weight: bold;
   font-size: 30px;

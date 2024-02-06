@@ -168,11 +168,11 @@ function renderStatus(state, condition) {
   const statusElement = document.getElementById('status');
   switch(condition){
     case End.P1:
-      statusElement.innerHTML = `${state} wins!`;
+      statusElement.innerHTML = `${state} summons the 🐉!`;
       toBlack(statusElement);
       break;
     case End.P2:
-      statusElement.innerHTML = `${state} wins!`;
+      statusElement.innerHTML = `${state} summons the 🐉!`;
       toWhite(statusElement);
       break;
     case End.Tie:
@@ -208,18 +208,31 @@ function renderGoBoard(board) {
     cellRowElement.className = 'row-container';
 
     for (let j = 0; j < board[0].length; j++) {
+      const stone = board[i][j];
       const cellElement = document.createElement('div');
       cellElement.className = 'cell';
       cellElement.id = `${i} ${j}`;
       cellRowElement.appendChild(cellElement);
 
-      if (board[i][j] === State.P1) {
-        const stoneElement = document.createElement('div');
-        stoneElement.className = 'stone black';
-        cellElement.appendChild(stoneElement);
-      } else if (board[i][j] === State.P2) {
-        const stoneElement = document.createElement('div');
-        stoneElement.className = 'stone white';
+      // if (board[i][j] === State.P1) {
+      //   const stoneElement = document.createElement('div');
+      //   stoneElement.className = 'stone black';
+      //   cellElement.appendChild(stoneElement);
+      // } else if (board[i][j] === State.P2) {
+      //   const stoneElement = document.createElement('div');
+      //   stoneElement.className = 'stone white';
+      //   cellElement.appendChild(stoneElement);
+      // }
+      
+      if(stone != null) {
+        const stoneElement = document.createElement('img');
+        const max = maxSumDirections(board, stone, i, j);
+        const prefix = (stone == State.P1) ? "B" : "W";
+        if(inRange(max, 1, 7)) {
+          stoneElement.src = `images/${prefix}${max}.webp`;
+        } else {
+          stoneElement.src = `images/${prefix}7.webp`;
+        }
         cellElement.appendChild(stoneElement);
       }
     }

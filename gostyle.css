@@ -68,14 +68,14 @@ input {
 .board {
   margin-left: 30vw;
   margin-right: 30vw;
-  border: 1px solid black;
-  background-color: #964B00;
+  border: 5px solid black;
+  background-color: black;
 }
   
 .cell {
   width: 100%;
   border: 2px solid black;
-  background-color: #f5deb3;
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;

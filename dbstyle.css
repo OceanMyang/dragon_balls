@@ -1,0 +1,114 @@
+body {
+  text-align: center;
+  margin: 0px;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#main-title {
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 100px;
+  margin-bottom: 30px;
+}
+
+#intro {
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.prompt {
+  margin-bottom: 10px;
+}
+
+input {
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+#play-button {
+  border-radius: 10px;
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+#empty {
+  height: 60px;
+}
+
+#toolbar {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.tool {
+  font-weight: bold;
+  width: 150px;
+  height: 30px;
+  margin: 0 10px;
+  border-radius: 10px;
+}
+
+#status {
+  height: 60px;
+  font-size: 40px;
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-container {
+  display: flex;
+}
+
+.board {
+  margin-left: 30vw;
+  margin-right: 30vw;
+  border: 5px solid black;
+  background-color: black;
+}
+  
+.cell {
+  width: 100%;
+  border: 2px solid black;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
+}
+  
+.stone {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+}
+
+.black {
+  background-color: black;
+}
+
+.white {
+  background-color: white;
+}
+
+.black-white {
+  color: white;
+  background-color: black;
+  border: 3px solid black;
+}
+
+.white-black {
+  color: black;
+  background-color: white;
+  border: 3px solid black;
+}
+
+img {
+  width: 90%;
+  height: 90%;
+}

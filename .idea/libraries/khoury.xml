@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="khoury">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/gomoku/khoury.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

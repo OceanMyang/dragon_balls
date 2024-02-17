@@ -13,13 +13,15 @@ const maxSize = 20;
 const minSize = 5;
 const maxWin = 7;
 const minWin = 5;
-const sizePrompt = "A size?";
-const winPrompt = "A magic number?";
+const sizePrompt = "A size? (5-20)";
+const winPrompt = "A magic number? (5-7)";
 const p1Prompt = "Player 1's name?";
 const p2Prompt = "Player 2's name?";
 
 let boardSize = 0;
 let numWin = 0;
+let moves = 0;
+let maxMoves = 0;
 let state = null;
 let goBoard = null;
 let row = null;
@@ -96,6 +98,8 @@ function buildGame(){
   // Initialize Variables
   state = State.P1;
   goBoard = new Array(boardSize).fill(null).map(() => new Array(boardSize).fill(null));
+  moves = 0;
+  maxMoves = boardSize * boardSize;
   row = null;
   col = null;
   end = End.Not;
@@ -151,16 +155,11 @@ function finalState(board, x, y, numWin){
     // Player 2 wins
     return End.P2
   }
-  for (i = 0; i < board.length; i++){
-    for (j = 0; j < board.length; j++){
-      if (board[i][j] == null) {
-        // Board Not Full && No Winner: Continue
-        return End.Not;
-      }
-    }
+  if (moves >= maxMoves) {
+    return End.Tie;
   }
   // Board Full && No Winner: Tie
-  return End.Tie;
+  return End.Not;
 }
 
 function renderStatus(state, condition) {
@@ -266,6 +265,7 @@ function cellEventListener(event){
   // else show status "space occupied"
   if (goBoard[row][col] == null) {
     goBoard[row][col] = state;
+    moves ++;
   } else {
     renderStatus(state, -1);
     setTimeout(()=>{renderStatus(state, end)}, 1000)

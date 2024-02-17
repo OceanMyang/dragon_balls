@@ -1,4 +1,5 @@
 body {
+  background-color: white;
   text-align: center;
   margin: 0px;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -51,14 +52,11 @@ input {
 }
 
 #status {
-  height: 60px;
-  font-size: 40px;
-  margin-left: 30%;
-  margin-right: 30%;
+  padding: 5px;
+  font-size: 50px;
+  margin-left: 25%;
+  margin-right: 25%;
   margin-bottom: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .row-container {
@@ -66,8 +64,8 @@ input {
 }
 
 .board {
-  margin-left: 30vw;
-  margin-right: 30vw;
+  margin-left: 25%;
+  margin-right: 25%;
   border: 5px solid black;
   background-color: black;
 }
